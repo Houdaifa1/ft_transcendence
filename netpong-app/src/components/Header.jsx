@@ -15,14 +15,31 @@ export default function Header() {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
+    const handleLogout = async () => {
+        try {
+            await fetch('/api/auth/logout', {
+                method: 'POST',
+                credentials: 'include',
+            });
+        } catch (error) {
+            console.error('Logout error:', error);
+        } finally {
+            // Clear local token and session
+            clearToken();
+            sessionStorage.removeItem('user');
+            setIsLoggedIn(false);
+            navigate('/login');
+        }
+    };
+
     const gameModesData = [
         {
-            name: 'Saul Society',
-            path: '/saul-society',
+            name: 'Soul Society',
+            path: '/soul-society',
             icon: '⚔️',
             color: 'gray',
             hoverBg: 'hover:bg-gray-400',
-            description: 'Saul Protector'
+            description: 'Soul Protector'
         },
         {
             name: 'Pink Barbie',
